@@ -5,7 +5,7 @@ import cn.neucloud.viz.analysis.Visualize
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkContext, SparkConf}
 //数据准备
-val data: DataFrame = sqlContext.createDataFrame(Seq(
+val data: DataFrame = spark.createDataFrame(Seq(
       (-1.50, 3.0), (-1.00, 4.0), (-0.75, 5.0),
       (-0.4, 6.0), (-0.25, 7.0), (-0.0, 8.0)
     )).toDF("label", "features")
