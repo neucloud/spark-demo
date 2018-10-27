@@ -1,19 +1,18 @@
 //算法名称-白化(whitening)
+import org.apache.spark.ml.linalg.SQLDataTypes
+import org.apache.spark.ml.linalg.Vectors
+import org.apache.spark.sql.types.{Metadata, StructField, StructType}
+import org.apache.spark.sql.{RowFactory, SparkSession}
 import cn.neucloud.dasuan.analysis.filtering.Whitening
-import org.apache.spark.mllib.linalg.{VectorUDT, Vectors}
-import org.apache.spark.sql.types.{StructField, StructType, Metadata}
-import org.apache.spark.sql.{RowFactory, SQLContext}
-//准备环境    
-val sql = new SQLContext(sc)
+
 //准备数据
 val data = sc.parallelize(Seq(
-RowFactory.create(Vectors.sparse(5,Array[Int] (1, 3), Array[Double](1.0, 7.0))),
-RowFactory.create(Vectors.dense(2.0, 0.0,3.0, 4.0, 5.0) ),
-RowFactory.create(Vectors.dense(4.0, 0.0, 0.0, 6.0, 7.0) ) ) )
-val schema = StructType(Array[StructField] (new StructField("features", new     VectorUDT(), false, Metadata.empty)))
-var df = sql.createDataFrame(data, schema)
-//应用算法    
+  RowFactory.create(Vectors.sparse(5,Array[Int] (1, 3), Array[Double](1.0, 7.0))),
+  RowFactory.create(Vectors.dense(2.0, 0.0,3.0, 4.0, 5.0) ),
+  RowFactory.create(Vectors.dense(4.0, 0.0, 0.0, 6.0, 7.0) ) ) )
+val schema = StructType(Array[StructField] (new StructField("features", SQLDataTypes.VectorType, false, Metadata.empty)))
+var df = spark.createDataFrame(data, schema)
+//应用算法
 var result = Whitening.PCAWhiten(df, 2, "features")
 result.show()
 result.collect().map(x=>println(x))
-
