@@ -1,20 +1,25 @@
 //算法名称-假设检验(HypothesisTest)
-import cn.neucloud.dasuan.analysis.stat.hypotest.HypothesisTesting
- //生成一组样本 均值为4 标准差为1.7
-var vector = new java.util.Vector[java.lang.Double]{}
-vector.add(0,1.0)
-vector.add(1,2.0)
-vector.add(2,7.0)
-vector.add(3,3.0)
-vector.add(4,3.0)
-vector.add(5,4.0)
-vector.add(6,4.0)
-vector.add(7,5.0)
-vector.add(8,5.0)
-vector.add(9,6.0)
-//应用算法,方法: uTest: u均值检验,参数: 样本: vector, 均值:3.0, 标准差:0.01, 显著性水平:1.7
-val htResultBean = HypothesisTesting.uTest(vector,3.0,0.01,1.7)
-println("conclusion: "+htResultBean.getConclusion())
-println("freedom: "+htResultBean.getFreedom())
-println("statistic: "+htResultBean.getStatistic())
-println("pvalue: "+htResultBean.getPvalue())
+import org.apache.spark.mllib.linalg.Vectors
+import cn.neucloud.dasuan.analysis.stat.HypothesisTest
+
+println("----------uTest--------------")
+val vector = Vectors.dense(1.0, 2.0,7.0,3.0,3.0,4.0,4.0,5.0,5.0,6.0)
+val htResultBean1 = HypothesisTest.uTest(vector,3.0,0.01,1.7)
+println("conclusion: "+htResultBean1.getConclusion())
+println("freedom: "+htResultBean1.getFreedom())
+println("statistic: "+htResultBean1.getStatistic())
+println("pvalue: "+htResultBean1.getPvalue())
+
+println("----------kfTest--------------")    
+val htResultBean2 = HypothesisTest.kfTest(vector, 3.9, 0.01)
+println("conclusion: "+htResultBean2.getConclusion())
+println("freedom: "+htResultBean2.getFreedom())
+println("statistic: "+htResultBean2.getStatistic())
+println("pvalue: "+htResultBean2.getPvalue())
+
+println("----------tTest--------------")       
+val htResultBean3 = HypothesisTest.tTest(vector, 3.9, 0.01)
+println("conclusion: "+htResultBean3.getConclusion())
+println("freedom: "+htResultBean3.getFreedom())
+println("statistic: "+htResultBean3.getStatistic())
+println("pvalue: "+htResultBean3.getPvalue())
